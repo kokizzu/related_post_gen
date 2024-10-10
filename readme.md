@@ -83,6 +83,7 @@ docker run -e TEST_NAME=all -it --rm databench
 | Vlang | 28.81 ms | 429.55 ms | 3.74 s | 4.20 s |
 | F# (JIT) | 26.25 ms | 410.77 ms | 3.92 s | 4.36 s |
 | Swift | 34.58 ms | 496.38 ms | 4.17 s | 4.70 s |
+| Haskell | 36.30 ms | 508.33 ms | 4.42 s | 4.96 s |
 | Odin | 34.53 ms | 510.76 ms | 4.47 s | 5.02 s |
 | Crystal | 39.44 ms | 582.76 ms | 5.13 s | 5.75 s |
 | JS (Bun) | 64.60 ms | 763.33 ms | 6.32 s | 7.15 s |
@@ -103,7 +104,7 @@ docker run -e TEST_NAME=all -it --rm databench
 | Lua | 827.92 ms | 12.78 s | 113.92 s | 127.53 s |
 | Python | 1.20 s | 18.93 s | 169.05 s | 189.18 s |
 | Lobster (JIT) | 1.35 s | 20.78 s | 195.33 s | 217.46 s |
-| Ruby | 2.29 s | 35.18 s | 316.54 s | 354.00 s |
+| Ruby | 1.50 s | 22.91 s | 213.64 s | 238.05 s |
 | Inko[^2] | 6.29 s | 98.05 s | 875.39 s | 979.73 s |
 | Numpy | 216.51 ms | OOM | 3.27 s | Infinity s |
 
