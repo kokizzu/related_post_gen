@@ -602,6 +602,13 @@ run_ruby() {
         check_output "related_posts_ruby.json"
 }
 
+run_php() {
+    echo "Running PHP" &&
+        cd ./php &&
+        run_command "PHP" $slow_lang_runs php ./related.php &&
+        check_output "related_posts_php.json"
+}
+
 run_dascript() {
     echo "Running daScript (interpreted)" &&
         cd ./dascript &&
@@ -936,6 +943,10 @@ elif [ "$first_arg" = "ruby" ]; then
 
     run_ruby
 
+elif [ "$first_arg" = "php" ]; then
+
+    run_php
+
 elif [ "$first_arg" = "dascript" ]; then
 
     run_dascript
@@ -1027,6 +1038,7 @@ elif [ "$first_arg" = "all" ]; then
         run_ocaml || echo -e "\n" &&
         run_erlang || echo -e "\n" &&
         # run_ruby || echo -e "\n" && # too slow
+        run_php || echo -e "\n" &&
         # run_dascript || echo -e "\n" && #not installed in docker
         run_racket || echo -e "\n" &&
         run_typed_racket || echo -e "\n" &&
@@ -1081,6 +1093,6 @@ elif [ "$first_arg" = "clean" ]; then
 
 else
 
-    echo "Valid args: go | go_con | rust | rust_con | d | d_con | r | py | numpy | erlang | cl | numba | numba_con | cr | zig | zig_con | odin | c3 | jq | julia | julia_highly_optimized | julia_con | v | dart | swift | swift_con | node | bun | deno | java | java_graal | java_graal_con | nim | luajit | lua | fsharp | fsharp_aot | fsharp_con | csharp | csharp_aot | dascript | all | clean. Unknown argument: $first_arg"
+    echo "Valid args: go | go_con | rust | rust_con | d | d_con | r | py | numpy | erlang | cl | numba | numba_con | cr | zig | zig_con | odin | c3 | jq | julia | julia_highly_optimized | julia_con | v | dart | swift | swift_con | node | bun | deno | java | java_graal | java_graal_con | nim | luajit | lua | fsharp | fsharp_aot | fsharp_con | csharp | csharp_aot | ruby | php | dascript | all | clean. Unknown argument: $first_arg"
 
 fi
