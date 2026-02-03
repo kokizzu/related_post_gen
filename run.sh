@@ -212,6 +212,17 @@ run_zig() {
         check_output "related_posts_zig.json"
 }
 
+run_zig_fast() {
+    echo "Running Zig Fast" &&
+        cd ./zig &&
+        if [ -z "$appendToFile" ]; then # only build on 5k run
+            zig build-exe -lc -O ReleaseFast main.zig
+        fi &&
+        run_command "Zig Fast" $runs ./main &&
+        check_output "related_posts_zig.json"
+}
+
+
 run_zig_con() {
     echo "Running Zig" &&
         cd ./zig_con &&
@@ -221,6 +232,18 @@ run_zig_con() {
         run_command "Zig Concurrent" $runs ./main &&
         check_output "related_posts_zig_con.json"
 }
+
+
+run_zig_con_fast() {
+    echo "Running Zig" &&
+        cd ./zig_con &&
+        if [ -z "$appendToFile" ]; then # only build on 5k run
+            zig build-exe -O ReleaseFast main.zig
+        fi &&
+        run_command "Zig Concurrent" $runs ./main &&
+        check_output "related_posts_zig_con.json"
+}
+
 
 run_julia() {
     echo "Running Julia" &&
@@ -760,9 +783,17 @@ elif [ "$first_arg" = "zig" ]; then
 
     run_zig
 
+elif [ "$first_arg" = "zig_fast" ]; then
+
+    run_zig_fast
+
 elif [ "$first_arg" = "zig_con" ]; then
 
     run_zig_con
+
+elif [ "$first_arg" = "zig_con_fast" ]; then
+
+    run_zig_con_fast
 
 elif [ "$first_arg" = "julia" ]; then
 
@@ -993,7 +1024,9 @@ elif [ "$first_arg" = "all" ]; then
         # run_python_numba || echo -e "\n" && break rules but very interesting
         run_crystal || echo -e "\n" &&
         run_zig || echo -e "\n" &&
+        run_zig_fast || echo -e "\n" &&
         run_zig_con || echo -e "\n" &&
+        run_zig_con_fast || echo -e "\n" &&
         run_julia || echo -e "\n" &&
         run_julia_highly_optimized || echo -e "\n" &&
         run_julia_con || echo -e "\n" &&
@@ -1081,6 +1114,6 @@ elif [ "$first_arg" = "clean" ]; then
 
 else
 
-    echo "Valid args: go | go_con | rust | rust_con | d | d_con | r | py | numpy | erlang | cl | numba | numba_con | cr | zig | zig_con | odin | c3 | jq | julia | julia_highly_optimized | julia_con | v | dart | swift | swift_con | node | bun | deno | java | java_graal | java_graal_con | nim | luajit | lua | fsharp | fsharp_aot | fsharp_con | csharp | csharp_aot | dascript | all | clean. Unknown argument: $first_arg"
+    echo "Valid args: go | go_con | rust | rust_con | d | d_con | r | py | numpy | erlang | cl | numba | numba_con | cr | zig_fast | zig_con | odin | c3 | jq | julia | julia_highly_optimized | julia_con | v | dart | swift | swift_con | node | bun | deno | java | java_graal | java_graal_con | nim | luajit | lua | fsharp | fsharp_aot | fsharp_con | csharp | csharp_aot | dascript | all | clean. Unknown argument: $first_arg"
 
 fi
