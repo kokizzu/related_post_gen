@@ -57,6 +57,7 @@ declare -A NameToImage=(
     ["cl"]="lisp"
     ["clj"]="clojure"
     ["ruby"]="ruby"
+    ["php"]="php"
     ["racket"]="racket"
     ["typed_racket"]="racket"
     ["lobster"]="lobster"
