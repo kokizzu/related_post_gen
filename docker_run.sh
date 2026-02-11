@@ -9,6 +9,7 @@ declare -A NameToImage=(
     ["cpp_con"]="base"
     ["rust"]="rust"
     ["rust_con"]="rust"
+    ["rust_ho"]="rust"
     ["py"]="base"
     ["numba"]="base"
     ["numba_con"]="base"

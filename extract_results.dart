@@ -4,8 +4,9 @@ import 'dart:io';
 
 final langRegex = RegExp(r'^[a-zA-Z]');
 final colonOrNewLineRegex = RegExp(r'[:\n]');
-final pTimeRegex =
-    RegExp(r'Processing time \(w/o IO\)[^0-9]*([\d.]+)\s?(ms|s|milliseconds)');
+final pTimeRegex = RegExp(
+  r'Processing time \(w/o IO\)[^0-9]*([\d.]+)\s?(ms|s|milliseconds)',
+);
 final tTimeRegex = RegExp(r'Time[^0-9]*([\d.]+ (ms|s))');
 
 const multiCoreHeading = '''
@@ -30,11 +31,11 @@ void main(List<String> args) {
   final lines = FileSystemEntity.isFileSync(filename)
       ? File(filename).readAsLinesSync()
       : Directory(filename)
-          .listSync()
-          .whereType<File>()
-          .where((f) => f.path.endsWith('.md'))
-          .expand((f) => f.readAsLinesSync())
-          .toList();
+            .listSync()
+            .whereType<File>()
+            .where((f) => f.path.endsWith('.md'))
+            .expand((f) => f.readAsLinesSync())
+            .toList();
 
   final scores = <String, List<Score>>{};
 
@@ -57,8 +58,9 @@ void main(List<String> args) {
     final processTimeMatch = pTimeRegex.firstMatch(line);
 
     if (processTimeMatch != null) {
-      final unit =
-          processTimeMatch.group(2)!.replaceFirst('milliseconds', 'ms');
+      final unit = processTimeMatch
+          .group(2)!
+          .replaceFirst('milliseconds', 'ms');
 
       final time = double.parse(processTimeMatch.group(1)!.trim());
 
@@ -80,38 +82,52 @@ void main(List<String> args) {
     sortedScores.forEach(print);
   }
 
-  final multiCoreScores =
-      sortedScores.where((s) => s.first.name.contains('Concurrent')).toList();
+  final multiCoreScores = sortedScores
+      .where((s) => s.first.name.contains('Concurrent'))
+      .toList();
 
   sortedScores..removeWhere((s) => s.first.name.contains('Concurrent'));
 
   if (sortedScores.first.length != 3) {
     sortedScores.forEach(print);
     print(
-        '${lines}\n\nEnough scores not found. Need 3 scores for each language to update readme.md - $currentLang');
+      '${lines}\n\nEnough scores not found. Need 3 scores for each language to update readme.md - $currentLang',
+    );
     return;
   }
 
-  final scoresWithoutJulia = sortedScores
-      .where((s) => !{'Julia HO', 'D HO'}.contains(s.first.name))
+  final scoresWithoutHO = sortedScores
+      .where((s) => !{'Julia HO', 'D HO', 'Rust HO'}.contains(s.first.name))
       .toList();
   // caclulate min times
-  min5k = scoresWithoutJulia.fold(
-      min5k, (min, sc) => sc[0].avgTimeMS() < min ? sc[0].avgTimeMS() : min);
-  min20k = scoresWithoutJulia.fold(
-      min20k, (min, sc) => sc[1].avgTimeMS() < min ? sc[1].avgTimeMS() : min);
-  min60k = scoresWithoutJulia.fold(
-      min60k, (min, sc) => sc[2].avgTimeMS() < min ? sc[2].avgTimeMS() : min);
-  con_min5k = multiCoreScores.fold(con_min5k,
-      (min, sc) => sc[0].avgTimeMS() < min ? sc[0].avgTimeMS() : min);
-  con_min20k = multiCoreScores.fold(con_min20k,
-      (min, sc) => sc[1].avgTimeMS() < min ? sc[1].avgTimeMS() : min);
-  con_min60k = multiCoreScores.fold(con_min60k,
-      (min, sc) => sc[2].avgTimeMS() < min ? sc[2].avgTimeMS() : min);
+  min5k = scoresWithoutHO.fold(
+    min5k,
+    (min, sc) => sc[0].avgTimeMS() < min ? sc[0].avgTimeMS() : min,
+  );
+  min20k = scoresWithoutHO.fold(
+    min20k,
+    (min, sc) => sc[1].avgTimeMS() < min ? sc[1].avgTimeMS() : min,
+  );
+  min60k = scoresWithoutHO.fold(
+    min60k,
+    (min, sc) => sc[2].avgTimeMS() < min ? sc[2].avgTimeMS() : min,
+  );
+  con_min5k = multiCoreScores.fold(
+    con_min5k,
+    (min, sc) => sc[0].avgTimeMS() < min ? sc[0].avgTimeMS() : min,
+  );
+  con_min20k = multiCoreScores.fold(
+    con_min20k,
+    (min, sc) => sc[1].avgTimeMS() < min ? sc[1].avgTimeMS() : min,
+  );
+  con_min60k = multiCoreScores.fold(
+    con_min60k,
+    (min, sc) => sc[2].avgTimeMS() < min ? sc[2].avgTimeMS() : min,
+  );
 
-  final parentDir = FileSystemEntity.parentOf(filename)
-      .split(Platform.pathSeparator)
-    ..add('readme.md');
+  final parentDir = FileSystemEntity.parentOf(
+    filename,
+  ).split(Platform.pathSeparator)..add('readme.md');
 
   final readmeFile = File(parentDir.join('/'));
 
@@ -159,9 +175,7 @@ class Score {
   final String name;
   final List<Time> processingTimes = [];
 
-  Score({
-    required this.name,
-  });
+  Score({required this.name});
 
   double avgTimeMS() {
     // if (processingTimes.isEmpty) throw Exception('No processing time found for $name');
@@ -199,6 +213,8 @@ extension on List<Score> {
       name = '_Julia HO_[^1]';
     } else if (name == 'D HO') {
       name = '_D HO_[^1]';
+    } else if (name == 'Rust HO') {
+      name = '_Rust HO_[^1]';
     } else if (name == 'Inko') {
       name = 'Inko[^2]';
     }

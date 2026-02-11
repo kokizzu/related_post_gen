@@ -66,6 +66,7 @@ docker run -e TEST_NAME=go -it --rm go_databench
 
 | Language         | Time (5k posts)                       | 20k posts                              | 60k posts                           | Total     |
 | ---------------- | ------------------------------------- | -------------------------------------- | ----------------------------------- | --------- |
+| _Rust HO_[^1] | 4.29 ms | 13.02 ms | 34.24 ms | 51.55 ms |
 | _D HO_[^1] | 10.77 ms | 40.07 ms | 113.05 ms | 163.89 ms |
 | _Julia HO_[^1] | 5.90 ms | 108.67 ms | 80.67 ms | 195.23 ms |
 | D (v2) | 12.06 ms | $\textsf{\color{lightgreen}122.21 ms}$ | $\textsf{\color{lightgreen}961.08 ms}$ | 1.10 s |
