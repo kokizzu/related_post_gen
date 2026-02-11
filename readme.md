@@ -17,6 +17,8 @@ Given a list of posts, compute the top 5 related posts for each post based on th
 
 ### Run Benchmark
 
+See [setup.md](setup.md) for complete guide.
+
 ```bash
 ./run.sh go | rust | python | all
 
