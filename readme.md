@@ -60,7 +60,7 @@ docker run -e TEST_NAME=go -it --rm go_databench
 -   Use less than 8GB of memory
 </details>
 
-### Updated Results from github workflow ([raw data](https://github.com/jinyus/related_post_gen/blob/main/results))
+### Single Core Results ([raw data](https://github.com/jinyus/related_post_gen/blob/main/results))
 
 ##### VM Specs ( AWS c7a.xlarge-4vCPU-8GB-RAM-Ubuntu 24.04 )
 
