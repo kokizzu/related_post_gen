@@ -1,2 +1,2 @@
-RUN pacman -S --noconfirm --needed php
+RUN pacman -Syu --noconfirm --needed php
 
