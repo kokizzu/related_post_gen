@@ -19,7 +19,7 @@ function main(): void
     }
 
     /** @var array<int, array{_id:string, title?:string, tags:array<int,string>}> $posts */
-    $posts = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+    $posts = json_decode($raw, true);
 
     $postsCount = count($posts);
 
@@ -109,7 +109,7 @@ function main(): void
             fwrite($out, ',');
         }
 
-        $json = json_encode($payload, JSON_UNESCAPED_SLASHES);
+        $json = json_encode($payload);
         if ($json === false) {
             fwrite(STDERR, "Failed to encode output JSON\n");
             exit(1);
