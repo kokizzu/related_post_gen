@@ -105,8 +105,8 @@ docker run -e TEST_NAME=go -it --rm go_databench
 | Scala Native | 260.20 ms | 3.08 s | 25.91 s | 29.25 s |
 | Lobster (JIT) | 468.85 ms | 7.17 s | 63.88 s | 71.52 s |
 | LuaJIT (JIT OFF) | 543.40 ms | 8.23 s | 82.45 s | 91.22 s |
+| PHP | 618.50 ms | 9.40 s | 89.15 s | 99.16 s |
 | Erlang | 647.18 ms | 10.30 s | 90.75 s | 101.70 s |
-| PHP | 611.30 ms | 9.80 s | 92.21 s | 102.62 s |
 | Lua | 837.32 ms | 12.76 s | 116.07 s | 129.66 s |
 | Python | 1.07 s | 16.67 s | 147.84 s | 165.58 s |
 | Ruby | 1.49 s | 24.06 s | 206.08 s | 231.63 s |
