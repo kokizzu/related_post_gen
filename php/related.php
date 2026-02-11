@@ -19,7 +19,7 @@ function main(): void
     }
 
     /** @var array<int, array{_id:string, title?:string, tags:array<int,string>}> $posts */
-    $posts = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+    $posts = json_decode($raw, true);
 
     $postsCount = count($posts);
 
@@ -36,9 +36,18 @@ function main(): void
     }
 
     $taggedPostCount = array_fill(0, $postsCount, 0);
-    $allRelated = [];
-
     $start = microtime(true);
+    $ioSeconds = 0.0;
+
+    $out = fopen($outPath, 'wb');
+    if ($out === false) {
+        fwrite(STDERR, "Failed to open $outPath for writing\n");
+        exit(1);
+    }
+
+    $t0 = microtime(true);
+    fwrite($out, '[');
+    $ioSeconds += microtime(true) - $t0;
 
     for ($i = 0; $i < $postsCount; $i++) {
         // Reset counts (faster/more predictable than array_fill in some runtimes).
@@ -89,26 +98,34 @@ function main(): void
             $topPosts[] = $posts[$top5[$k]];
         }
 
-        $allRelated[] = [
+        $payload = [
             '_id' => $posts[$i]['_id'],
             'tags' => $posts[$i]['tags'],
             'related' => $topPosts,
         ];
+
+        $t0 = microtime(true);
+        if ($i !== 0) {
+            fwrite($out, ',');
+        }
+
+        $json = json_encode($payload);
+        if ($json === false) {
+            fwrite(STDERR, "Failed to encode output JSON\n");
+            exit(1);
+        }
+
+        fwrite($out, $json);
+        $ioSeconds += microtime(true) - $t0;
     }
 
-    $elapsedMs = (int) round((microtime(true) - $start) * 1000.0);
+    $t0 = microtime(true);
+    fwrite($out, ']');
+    fclose($out);
+    $ioSeconds += microtime(true) - $t0;
+
+    $elapsedMs = (int) round(((microtime(true) - $start) - $ioSeconds) * 1000.0);
     fwrite(STDOUT, "Processing time (w/o IO): {$elapsedMs}ms\n");
-
-    $jsonOut = json_encode($allRelated, JSON_UNESCAPED_SLASHES);
-    if ($jsonOut === false) {
-        fwrite(STDERR, "Failed to encode output JSON\n");
-        exit(1);
-    }
-
-    if (file_put_contents($outPath, $jsonOut) === false) {
-        fwrite(STDERR, "Failed to write $outPath\n");
-        exit(1);
-    }
 }
 
 main();
