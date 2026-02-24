@@ -2,6 +2,7 @@
 #include <vector>
 #include <deque>
 #include <string>
+#include <string_view>
 #include <array>
 #include <fstream>
 #include <chrono>
@@ -20,27 +21,18 @@ struct Post
     std::vector<std::string> tags;
 };
 
-template<typename T>
-struct Deleter
-{
-    void operator()(T* p) const
-    {
-      // DO NOTHING
-    }
-};
-
 struct RelatedPosts
 {
-    std::unique_ptr<std::string const, Deleter<std::string const>> _id;
-    std::unique_ptr<std::vector<std::string> const, Deleter<std::vector<std::string> const>> tags;
-    std::array<std::unique_ptr<Post const, Deleter<Post const>>, TOPN> related;
+    std::string_view _id;
+    const std::vector<std::string>* tags;
+    std::array<const Post*, TOPN> related;
 };
 
 void to_json(json &j, const RelatedPosts &rp)
 {
-    j = json{{"_id", *rp._id}, {"tags", *rp.tags}};
+    j = json{{"_id", rp._id}, {"tags", *rp.tags}};
     json related;
-    for (auto &post : rp.related)
+    for (auto const* post : rp.related)
     {
         json p;
         p["_id"] = post->_id;
@@ -51,33 +43,23 @@ void to_json(json &j, const RelatedPosts &rp)
     j["related"] = related;
 }
 
-using TagMap = std::unordered_map<std::string, std::unique_ptr<std::vector<int>>>;
+using TagMap = std::unordered_map<std::string_view, std::vector<int>>;
 
 struct TagPost {
-  std::unique_ptr<Post const, Deleter<Post const>> post;
-  std::vector<std::unique_ptr<std::vector<int>, Deleter<std::vector<int>>>> tags;
+  const Post* post;
+  std::vector<const std::vector<int>*> tags;
 };
 
 void create_tagPost(std::deque<Post> const& posts, std::vector<TagPost>& tps, TagMap& tm) {
   for (size_t i = 0; i < posts.size(); ++i) {
-      auto& tp = tps.at(i) ;
-      tp.post = std::move(std::unique_ptr<Post const, Deleter<Post const>>(&(posts.at(i))));
+      auto& tp = tps.at(i);
+      tp.post = &(posts.at(i));
 
-      for (auto const&tag : posts.at(i).tags)
+      for (std::string_view tag : posts.at(i).tags)
       {
-          std::vector<int>* vp = nullptr;
-          auto it = tm.find(tag);
-
-          if (it == tm.end()) {
-            auto p = tm.insert({tag, std::make_unique<std::vector<int>>()});
-            p.first->second->emplace_back(i);
-            vp = p.first->second.get();
-          }
-          else {
-            it->second->emplace_back(i);
-            vp = it->second.get();
-          }
-          tp.tags.emplace_back(vp);
+          auto& vp = tm[tag];
+          vp.push_back(i);
+          tp.tags.emplace_back(&vp);
       }
   }
 }
@@ -114,10 +96,10 @@ void do_work(size_t b, size_t e, std::vector<TagPost>const& posts,  std::vector<
         std::memset(taggedPostCount.data(), 0, posts.size());
         const TagPost& p = posts.at(i);
         RelatedPosts& relatedPost = allRelatedPosts.at(i);
-        relatedPost._id = std::move(std::unique_ptr<std::string const, Deleter<std::string const>>(&p.post->_id));
-        relatedPost.tags = std::move(std::unique_ptr<std::vector<std::string> const, Deleter<std::vector<std::string> const>>(&p.post->tags));
+        relatedPost._id = p.post->_id;
+        relatedPost.tags = &p.post->tags;
 
-        for (const auto &tag : p.tags)
+        for (auto const* tag : p.tags)
         {
             for (auto otherPostIdx : *tag)
             {
@@ -165,7 +147,7 @@ void do_work(size_t b, size_t e, std::vector<TagPost>const& posts,  std::vector<
         }
 
         for (size_t i = 0; i < 5; ++i) {
-            relatedPost.related.at(i) = std::move(std::unique_ptr<Post const, Deleter<Post const>>(posts.at(top5.at(i).second).post.get()));
+            relatedPost.related.at(i) = posts.at(top5.at(i).second).post;
         }
     }
 }
@@ -191,7 +173,7 @@ int main()
 {
     auto const posts = read_posts();
 
-    auto const start = std::chrono::high_resolution_clock::now();
+    auto const start = std::chrono::steady_clock::now();
 
     std::vector<TagPost> tps(posts.size());
     TagMap tmap;
@@ -200,7 +182,7 @@ int main()
     std::vector<RelatedPosts> allRelatedPosts(posts.size());
     do_work(0, tps.size(), tps, allRelatedPosts);
 
-    auto const end = std::chrono::high_resolution_clock::now();
+    auto const end = std::chrono::steady_clock::now();
     auto const elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
     std::cout << "Processing time (w/o IO): " << elapsed.count() << " ms\n";
