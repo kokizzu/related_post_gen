@@ -1,40 +1,40 @@
 C++ Concurrent:
 
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47228k
+        total: 0.15s memory: 47276k
         Processing time (w/o IO): 4 ms
-        total: 0.16s memory: 47176k
+        total: 0.16s memory: 47204k
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47336k
+        total: 0.15s memory: 47320k
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47268k
+        total: 0.15s memory: 47204k
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47360k
+        total: 0.15s memory: 47272k
         Processing time (w/o IO): 4 ms
         total: 0.15s memory: 47136k
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47340k
+        total: 0.15s memory: 47192k
         Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47052k
-        Processing time (w/o IO): 4 ms
-        total: 0.15s memory: 47284k
+        total: 0.15s memory: 47440k
         Processing time (w/o IO): 4 ms
         total: 0.15s memory: 47216k
+        Processing time (w/o IO): 4 ms
+        total: 0.15s memory: 47604k
 
 C++ Concurrent:
 
         Processing time (w/o IO): 44 ms
-        total: 0.69s memory: 177028k
+        total: 0.68s memory: 176996k
         Processing time (w/o IO): 44 ms
-        total: 0.70s memory: 177000k
+        total: 0.69s memory: 177272k
         Processing time (w/o IO): 44 ms
-        total: 0.69s memory: 177024k
+        total: 0.69s memory: 177148k
 
 C++ Concurrent:
 
-        Processing time (w/o IO): 357 ms
-        total: 2.33s memory: 461252k
-        Processing time (w/o IO): 356 ms
-        total: 2.36s memory: 461316k
-        Processing time (w/o IO): 356 ms
-        total: 2.37s memory: 461048k
+        Processing time (w/o IO): 354 ms
+        total: 2.30s memory: 461252k
+        Processing time (w/o IO): 355 ms
+        total: 2.40s memory: 461268k
+        Processing time (w/o IO): 354 ms
+        total: 2.34s memory: 461320k

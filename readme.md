@@ -117,8 +117,8 @@ docker run -e TEST_NAME=go -it --rm go_databench
 | Language       | Time (5k posts) | 20k posts        | 60k posts        | Total     |
 | -------------- | --------------- | ---------------- | ---------------- | --------- | 
 | D Concurrent (v2) | 6.22 ms | 46.71 ms | $\textsf{\color{lightgreen}273.33 ms}$ | 326.26 ms |
+| C++ Concurrent | $\textsf{\color{lightgreen}4.00 ms}$ | $\textsf{\color{lightgreen}44.00 ms}$ | 354.33 ms | 402.33 ms |
 | D Concurrent | 6.65 ms | 50.79 ms | 345.70 ms | 403.15 ms |
-| C++ Concurrent | $\textsf{\color{lightgreen}4.00 ms}$ | $\textsf{\color{lightgreen}44.00 ms}$ | 356.33 ms | 404.33 ms |
 | C# Concurrent (JIT) | 5.70 ms | 54.21 ms | 403.47 ms | 463.38 ms |
 | Rust Concurrent | 4.30 ms | 50.94 ms | 434.67 ms | 489.91 ms |
 | C# Concurrent (AOT) | 4.35 ms | 53.92 ms | 442.09 ms | 500.36 ms |
