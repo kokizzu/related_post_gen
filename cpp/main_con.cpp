@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <string>
 #include <fstream>
 #include <chrono>
@@ -71,7 +72,7 @@ struct TagPost {
   std::vector<std::unique_ptr<std::vector<int>, Deleter<std::vector<int>>>> tags;
 };
 
-void create_tagPost(std::vector<Post> const& posts, std::vector<TagPost>& tps, TagMap& tm) {
+void create_tagPost(std::deque<Post> const& posts, std::vector<TagPost>& tps, TagMap& tm) {
   for (size_t i = 0; i < posts.size(); ++i) {
       auto& tp = tps.at(i);
       tp.post = std::move(std::unique_ptr<Post const, Deleter<Post const>>(&(posts.at(i))));
@@ -95,7 +96,7 @@ void create_tagPost(std::vector<Post> const& posts, std::vector<TagPost>& tps, T
   }
 }
 
-std::vector<Post> read_posts(){
+std::deque<Post> read_posts(){
     std::ifstream file("../posts.json");
     if (!file.is_open())
     {
@@ -105,8 +106,7 @@ std::vector<Post> read_posts(){
 
     json j;
     file >> j;
-    std::vector<Post> posts;
-    posts.reserve(j.size());
+    std::deque<Post> posts;
 
     for (const auto &post : j)
     {
