@@ -120,11 +120,11 @@ docker run -e TEST_NAME=go -it --rm go_databench
 | D Concurrent | 6.65 ms | 50.79 ms | 345.70 ms | 403.15 ms |
 | C++ Concurrent | $\textsf{\color{lightgreen}4.00 ms}$ | $\textsf{\color{lightgreen}44.00 ms}$ | 356.33 ms | 404.33 ms |
 | C# Concurrent (JIT) | 5.70 ms | 54.21 ms | 403.47 ms | 463.38 ms |
+| Rust Concurrent | 4.30 ms | 50.94 ms | 434.67 ms | 489.91 ms |
 | C# Concurrent (AOT) | 4.35 ms | 53.92 ms | 442.09 ms | 500.36 ms |
 | Nim Concurrent | 4.60 ms | 59.70 ms | 505.32 ms | 569.63 ms |
 | Zig Concurrent | 6.19 ms | 68.64 ms | 550.06 ms | 624.89 ms |
 | F# Concurrent | 5.50 ms | 75.00 ms | 604.33 ms | 684.83 ms |
-| Rust Concurrent | 5.54 ms | 73.28 ms | 637.51 ms | 716.33 ms |
 | Julia Concurrent | 6.82 ms | 79.38 ms | 679.22 ms | 765.42 ms |
 | Go Concurrent | 7.02 ms | 90.35 ms | 785.71 ms | 883.09 ms |
 | F# Concurrent (AOT) | 8.00 ms | 121.00 ms | 1.08 s | 1.21 s |
